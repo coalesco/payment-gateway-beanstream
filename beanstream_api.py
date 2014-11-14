@@ -68,6 +68,12 @@ class BeanstreamClient(object):
         data['serviceVersion'] = self.service_version
         data['requestType'] = 'BACKEND'
 
+        # Apply "user/password validation" to the request.
+        # To simplify we set the user to the merchant ID and password
+        # to the first 16 characters of the passcode
+        data['username'] = self.merchant_id
+        data['password'] = self.pass_code[:16]
+
         result = requests.post(self.service_url, data=data)
 
         response = self.make_response(result.content)
